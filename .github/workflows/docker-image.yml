@@ -14,6 +14,6 @@ jobs:
     - name: Build the Docker image
       run: docker build . --file Dockerfile --tag tharinduakalanak/bus-route:$TAG
     - name: Log in to Docker Hub
-      run: docker login -u tharinduakalanak -p ${{ secrets.DOCKER_PASSWORD }}
+      run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "tharinduakalanak" --password-stdin
     - name: push image to docker hub
       run: docker push tharinduakalanak/bus-route:$TAG
