@@ -1,22 +1,45 @@
-// src/config/db.js
 const mysql = require('mysql2');
 const dotenv = require('dotenv');
 
 dotenv.config();
 
-const connection = mysql.createConnection({
-  host: process.env.DB_HOST,      // e.g., 'localhost'
-  user: process.env.DB_USER,      // e.g., 'root'
-  password: process.env.DB_PASS,  // e.g., 'password'
-  database: process.env.DB_NAME   // e.g., 'my_database'
-});
+let connection = null;
 
-connection.connect((err) => {
-  if (err) {
-    console.error('Database connection failed:', err.stack);
-    return;
+function createConnection() {
+  const conn = mysql.createConnection({
+    host: process.env.DB_HOST,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASS,
+    database: process.env.DB_NAME,
+  });
+
+  conn.connect((err) => {
+    if (err) {
+      console.error('MySQL connection failed:', err.stack);
+      setTimeout(createConnection, 2000); // Retry after 2s
+    } else {
+      console.log('Connected to MySQL as ID', conn.threadId);
+    }
+  });
+
+  // Auto-reconnect on connection loss
+  conn.on('error', (err) => {
+    if (err.code === 'PROTOCOL_CONNECTION_LOST') {
+      console.warn('MySQL connection lost. Reconnecting...');
+      connection = createConnection();
+    } else {
+      throw err;
+    }
+  });
+
+  return conn;
+}
+
+function getConnection() {
+  if (!connection) {
+    connection = createConnection();
   }
-  console.log('Connected to MySQL as ID', connection.threadId);
-});
+  return connection;
+}
 
-module.exports = connection;
+module.exports = getConnection();
