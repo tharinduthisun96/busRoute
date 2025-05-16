@@ -4,6 +4,7 @@ const locationController   = require('../controllers/locationController');
 const roadController   = require('../controllers/roadController');
 const { verifyToken } = require('../middlewares/authMiddleware');
 
+router.post('/locations-key', locationController.fetchLocationsByKey);
 router.get('/locations', locationController.fetchLocations);
 router.post('/add-location', verifyToken,locationController.createLocation);
 router.post('/join', verifyToken,roadController.joinLocations);

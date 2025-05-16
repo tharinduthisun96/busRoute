@@ -23,3 +23,17 @@ exports.getAllBusRoutes = () => {
       });
     });
 };
+
+exports.getAllLocationsKey = (name) => {
+  return new Promise((resolve, reject) => {
+    const sql = 'SELECT * FROM locationtb WHERE name LIKE ?';
+    const searchTerm = `%${name}%`; // Match any location that contains the input string
+
+    pool.query(sql, [searchTerm], (err, results) => {
+      if (err) {
+        return reject(err);
+      }
+      resolve(results);
+    });
+  });
+};

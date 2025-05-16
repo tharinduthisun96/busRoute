@@ -1,10 +1,22 @@
-const { getAllLocations ,getAllBusRoutes} = require('../services/locationService');
+const { getAllLocations ,getAllBusRoutes ,getAllLocationsKey} = require('../services/locationService');
 const pool = require('../config/db.js');
 const driver = require('../config/neo4j.js');
 
 exports.fetchLocations = async (req, res) => {
   try {
     const locations = await getAllLocations();
+    res.status(200).json({ locations });
+  } catch (error) {
+    console.error('Error fetching locations:', error);
+    res.status(500).json({ error: 'Failed to fetch locations' });
+  }
+};
+
+//////////////////////
+exports.fetchLocationsByKey = async (req, res) => {
+  const { name } = req.body;
+  try {
+    const locations = await getAllLocationsKey(name);
     res.status(200).json({ locations });
   } catch (error) {
     console.error('Error fetching locations:', error);
