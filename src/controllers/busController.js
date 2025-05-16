@@ -1,8 +1,5 @@
 const pool = require('../config/db');
-const {
-  getDirectBusInfo,
-  getConnectingBusInfo
-} = require('../services/busService');
+const { getBusRoutes } = require('../services/busService');
 
 exports.getBusIds = async (req, res) => {
   const { start, end } = req.body;
@@ -12,18 +9,14 @@ exports.getBusIds = async (req, res) => {
   }
 
   try {
-    const [directData, connectingData] = await Promise.all([
-      getDirectBusInfo(start, end),
-      getConnectingBusInfo(start, end)
-    ]);
+    // Get both categorized routes
+    const { busRoutes } = await getBusRoutes(start, end);
 
-    // Combine unique bus_ids from both
-    const allBusIds = [
-      ...new Set([
-        ...directData.map(d => d.bus_id),
-        ...connectingData.map(c => c.bus_id)
-      ])
-    ];
+    // Collect all unique bus IDs
+    const allBusIds = [...new Set([
+      ...busRoutes.direct.map(b => b.id),
+      ...busRoutes.connecting.map(b => b.id)
+    ])];
 
     if (allBusIds.length === 0) {
       return res.status(404).json({ message: 'No bus routes found.' });
@@ -38,22 +31,22 @@ exports.getBusIds = async (req, res) => {
         return res.status(500).json({ error: 'MySQL query failed' });
       }
 
-      const busRouteMap = {};
+      const mapById = {};
       results.forEach(r => {
-        busRouteMap[r.neo4j_id] = r;
+        mapById[r.neo4j_id] = r;
       });
 
-      const enrich = (dataArr) =>
-        dataArr.map(d => ({
-          ...busRouteMap[d.bus_id],
-          totalDistance: d.totalDistance,
-          totalTime: d.totalTime
+      const enrich = (routes) =>
+        routes.map(r => ({
+          ...mapById[r.id],
+          totalDistance: r.totalDistance,
+          totalTime: r.totalTime
         }));
 
       return res.status(200).json({
         busRoutes: {
-          direct: enrich(directData),
-          connecting: enrich(connectingData)
+          direct: enrich(busRoutes.direct),
+          connecting: enrich(busRoutes.connecting)
         }
       });
     });
