@@ -4,7 +4,6 @@
 [![Node.js](https://img.shields.io/badge/Node.js-v18+-green.svg)](https://nodejs.org/)  
 [![Neo4j](https://img.shields.io/badge/Graph-DB%3A%20Neo4j-blue.svg)](https://neo4j.com/)  
 [![MySQL](https://img.shields.io/badge/Relational-DB%3A%20MySQL-lightgrey.svg)](https://www.mysql.com/)  
-[![Build](https://img.shields.io/github/actions/workflow/status/tharinduthisun96/busRoute/main.yml?label=build)](https://github.com/tharinduthisun96/busRoute/actions)  
 [![Release](https://img.shields.io/github/v/release/tharinduthisun96/busRoute)](https://github.com/tharinduthisun96/busRoute/releases)
 
 A centralized **Bus Route Finder System for Sri Lanka**, enabling users to search available routes between cities using real-time data. Combines both **public** and **private** transport with advanced route optimization using **Neo4j** and relational data management with **MySQL**.
@@ -35,16 +34,27 @@ A centralized **Bus Route Finder System for Sri Lanka**, enabling users to searc
 ## 📁 Project Structure
 
 📦 busRoute/
+
 ├── 📁 .circleci/              # CircleCI config
+
 ├── 📁 .github/workflows/      # GitHub Actions CI/CD
+
 ├── 📁 database/               # SQL scripts & initial data
+
 ├── 📁 src/                    # Main API code (server.js, routes, controllers)
+
 ├── 📄 .env                    # Environment config
+
 ├── 📄 Dockerfile              # Docker image definition
+
 ├── 📄 package.json            # Node dependencies
+
 ├── 📄 package-lock.json       # Dependency lock file
+
 ├── 📄 README.md               # This file
+
 ├── 📄 requirements.txt        # (Optional) Python tools
+
 └── 📄 .gitignore              # Git ignored files
 
 
