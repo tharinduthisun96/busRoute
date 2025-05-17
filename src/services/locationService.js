@@ -2,7 +2,7 @@ const pool = require('../config/db.js');
 
 exports.getAllLocations = () => {
     return new Promise((resolve, reject) => {
-      const sql = 'SELECT * FROM locationtb';
+      const sql = 'SELECT * FROM locationtb ORDER BY name ASC';
       pool.query(sql, (err, results) => {
         if (err) {
           return reject(err);
@@ -14,7 +14,7 @@ exports.getAllLocations = () => {
 
 exports.getAllBusRoutes = () => {
     return new Promise((resolve, reject) => {
-      const sql = 'SELECT * FROM bus_routetb';
+      const sql = 'SELECT * FROM bus_routetb ORDER BY bus_route_name ASC';
       pool.query(sql, (err, results) => {
         if (err) {
           return reject(err);
