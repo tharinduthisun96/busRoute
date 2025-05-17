@@ -19,7 +19,7 @@ exports.getBusIds = async (req, res) => {
     ])];
 
     if (allBusIds.length === 0) {
-      return res.status(404).json({ message: 'No bus routes found.' });
+      return res.status(200).json({ message: 'No bus routes found.' });
     }
 
     const placeholders = allBusIds.map(() => '?').join(',');
