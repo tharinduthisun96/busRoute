@@ -25,6 +25,7 @@ A centralized **Bus Route Finder System for Sri Lanka**, enabling users to searc
 ## 📦 Tech Stack
 
 - **Backend**: Node.js, Express.js
+- **FrontEnd**: Bubble.io
 - **Databases**: MySQL, Neo4j
 - **Dev Tools**: Nodemon, Docker
 - **CI/CD**: CircleCI, GitHub Actions
